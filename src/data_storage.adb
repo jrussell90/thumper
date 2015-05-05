@@ -1,33 +1,30 @@
 with Postgresql;
 use Postgresql;
+with Ada.Text_IO;
+use Ada.Text_IO;
 
 
 package body Data_Storage is
 
    procedure Initialize is
    begin
-      Postgresql.Connect(test, 5432, localhost, postgres, football);
-      if Connected then
-         Connected:= True;
-      end if;
-
+      Postgresql.Connect("test", 5432, "localhost", "postgres", "football99");
+      Put_Line("Connected to the Database.");
    end Initialize;
 
 
    procedure Shutdown is
    begin
-      if Connected then
-         Postgresql.Disconnect;
-         Connected:=False;
-      end if;
+      Postgresql.Disconnect;
+      Put_Line("Disconnected From the Database");
    end Shutdown;
 
 
    function Timestamp_Count return Count_Type is
+   Type Count is new Count_Type range 1..Count_Type'Last;
    begin
-      if Connected then
-         Query_String:= "SELECT * FROM test WHERE";
-      end if;
+      Count := PostgreSQL.Execute_Query("SELECT COUNT(ts) FROM test");
+      return Count;
    end Timestamp_Count;
 
 
