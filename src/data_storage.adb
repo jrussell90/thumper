@@ -8,7 +8,7 @@ package body Data_Storage is
 
    procedure Initialize is
    begin
-      Postgresql.Connect("test", 5432, "localhost", "postgres", "football99");
+      Postgresql.Connect("Thumper", 5432, "localhost", "postgres", "football99");
       Put_Line("Connected to the Database.");
    end Initialize;
 
@@ -21,10 +21,8 @@ package body Data_Storage is
 
 
    function Timestamp_Count return Count_Type is
-   Type Count is new Count_Type range 1..Count_Type'Last;
    begin
-      Count := PostgreSQL.Execute_Query("SELECT COUNT(ts) FROM test");
-      return Count;
+      return Count_Type'Value(Get_Value(0,0));
    end Timestamp_Count;
 
 
@@ -35,9 +33,11 @@ package body Data_Storage is
 
 
    function Timestamp_Retrieve(Serial_Number : Serial_Number_Type) return Timestamp_Array is
-      Dummy : Timestamp_Array(1 .. 0);
-   begin
-      return Dummy;
+      Declare
+         Result: Timestamp_Array(1..PostgreSQL.Number_Of_Tuples);
+      begin
+         return Result;
+      end;
    end Timestamp_Retrieve;
 
 
